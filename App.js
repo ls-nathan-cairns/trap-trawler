@@ -10,7 +10,7 @@ export default class App extends React.Component {
         <TopBar/>
         <GameWindow
           numMines={10}
-          height={5}
+          height={10}
           width={5}
         />
       </View>

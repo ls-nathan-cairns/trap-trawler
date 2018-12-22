@@ -10,13 +10,13 @@ export default class GameWindow extends React.Component {
     }
 
     state = {
-        mineArray: [],
+        board: [],
     }
 
-    generateMineIndexes = () => {
+    generateMineIndicies = () => {
         const { numMines, height, width } = this.props
         const numSquares = height * width;
-        const range = Array(numSquares).fill(0).map((x, y) => x + y);
+        let range = Array(numSquares).fill(0).map((x, y) => x + y);
 
         for ( let i = 0; i < numMines; i += 1) {
             const swapIndex = Math.floor((Math.random() * numSquares));
@@ -24,14 +24,115 @@ export default class GameWindow extends React.Component {
             range[i] = range[swapIndex];
             range[swapIndex] = swapValue;
         }
+        range = range.splice(0, numMines);
 
-        return range.slice(0, numMines);
+        const mineIndicies = range.map(val => {
+            x = val % 10;
+            y = (val - x) / 10;
+            return {
+                x: x,
+                y: y,
+            };
+        });
+
+        return mineIndicies;
+    }
+
+    createBoardWithMines = (mineIndicies) => {
+        const { height, width } = this.props;
+
+        const board = new Array(height).fill(0).map(() => new Array(width).fill({
+            isMine: false,
+            neighbours: 0,
+        }));
+
+        for (let i = 0; i < mineIndicies.length; i += 1) {
+            const x = mineIndicies[i].x;
+            const y = mineIndicies[i].y;
+            board[x][y] = {
+                ...board[x][y], isMine: true,
+            };
+        }
+
+        return board;
+    }
+
+    initNeighbours = (boardWithMines) => {
+        const { height, width } = this.props;
+        const board = boardWithMines;
+
+        for (let i = 0; i < height; i += 1) {
+            for (let j = 0; j < width; j += 1) {
+                const numMines = this.checkForNeighbouringMines(i, j, board);
+                board[i][j] = {
+                    ...board[i][j], neighbours: numMines,
+                };
+            }
+        }
+
+        return board;
+    }
+
+    checkForNeighbouringMines = (i, j, board) => {
+        const { height, width } = this.props;
+        let numMines = 0;
+
+        // Check top
+        if (i > 0) {
+            if (board[i-1][j].isMine) numMines+= 1;
+        }
+
+        // Check top right
+        if (i > 0 && j < width - 1) {
+            if (board[i-1][j+1].isMine) numMines += 1;
+        }
+
+        // Check right
+        if (j < width -1) {
+            if (board[i][j+1].isMine) numMines += 1;
+        }
+
+        // Check bottom right
+        if (j < width - 1 && i < height - 1) {
+            if (board[i+1][j+1].isMine) numMines += 1;
+        }
+
+        // Check bottom
+        if (i < height - 1) {
+            if (board[i+1][j].isMine) numMines += 1;
+        }
+
+        // Check bottom left
+        if (i < height - 1 && j > 0) {
+            if (board[i+1][j-1].isMine) numMines += 1;
+        }
+
+        // Check left
+        if (j > 0) {
+            if (board[i][j-1].isMine) numMines += 1;
+        }
+
+        // Check top left
+        if (j > 0 && i > 0) {
+            if (board[i-1][j-1].isMine) numMines += 1;
+        }
+
+        return numMines;
+    }
+
+    initBoard = () => {
+        const mineIndicies = this.generateMineIndicies();
+        const boardWithMines = this.createBoardWithMines(mineIndicies);
+        const board = this.initNeighbours(boardWithMines);
+
+        return board;
     }
 
     componentDidMount () {
-        this.generateMineIndexes();
+        this.setState({
+            board: this.initBoard(),
+        });
     }
-
 
     render () {
         return (
