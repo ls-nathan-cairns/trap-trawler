@@ -1,5 +1,6 @@
 import React from 'react';
-import { StyleSheet, View, Text } from 'react-native';
+import { StyleSheet, View } from 'react-native';
+import Square from './Square';
 import PropTypes from 'prop-types';
 import colours from '../../config/ColourConfig';
 
@@ -136,9 +137,24 @@ export default class GameWindow extends React.Component {
     }
 
     render () {
+      const { board } = this.state; 
       return (
         <View style={styles.gameWindowContainer}>
-          <Text>Game Window</Text>
+          {
+            board.map((row, rowIndex) => {
+              return (
+                <View style={styles.row} key={rowIndex}>
+                  { row.map((square, colIndex) => {
+                    return (
+                      <Square
+                        key={rowIndex *  board[0].length + colIndex}
+                        isMine={square.isMine}
+                        neighbours={square.neighbours}
+                      />
+                    )})}
+                </View>)
+            })
+          }
         </View>
       );
     }
@@ -147,6 +163,11 @@ export default class GameWindow extends React.Component {
 const styles = StyleSheet.create({
   gameWindowContainer: {
     backgroundColor: colours.red,
-    flex: 7
-  }
+    flex: 7,
+  },
+  row: {
+    flex: 1,
+    flexDirection: 'row',
+    backgroundColor: colours.green,
+  },
 });
