@@ -1,10 +1,11 @@
-import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
-import TopBar from './game_components/TopBar';
-import GameWindow from './game_components/board/GameWindow';
+import React from 'react'
+import { StyleSheet, View } from 'react-native'
+import TopBar from './game_components/TopBar'
+import GameWindow from './game_components/board/GameWindow'
+import colours from './config/ColourConfig';
 
 export default class App extends React.Component {
-  render() {
+  render () {
     return (
       <View style={styles.container}>
         <TopBar/>
@@ -14,13 +15,13 @@ export default class App extends React.Component {
           width={5}
         />
       </View>
-    );
+    )
   }
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-  },
-});
+    backgroundColor: colours.background,
+  }
+})
