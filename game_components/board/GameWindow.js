@@ -29,11 +29,11 @@ export default class GameWindow extends React.Component {
       range = range.splice(0, numMines);
 
       const mineIndicies = range.map(val => {
-        const x = val % 10;
-        const y = (val - x) / 10;
+        const rowIndex = Math.floor(Math.abs(val -1) / width % width);
+        const colIndex = Math.abs(val - 1) % width;
         return {
-          x: x,
-          y: y,
+          rowIndex: rowIndex,
+          colIndex: colIndex,
         };
       });
 
@@ -50,10 +50,10 @@ export default class GameWindow extends React.Component {
       }));
 
       for (let i = 0; i < mineIndicies.length; i += 1) {
-        const x = mineIndicies[i].x;
-        const y = mineIndicies[i].y;
-        board[x][y] = {
-          ...board[x][y], isMine: true,
+        const rowIndex = mineIndicies[i].rowIndex;
+        const colIndex = mineIndicies[i].colIndex;
+        board[rowIndex][colIndex] = {
+          ...board[rowIndex][colIndex], isMine: true,
         };
       }
 
