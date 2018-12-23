@@ -1,21 +1,26 @@
 import React from 'react';
-import { Text, StyleSheet, View } from 'react-native';
+import { Text, StyleSheet, TouchableOpacity } from 'react-native';
 import PropTypes from 'prop-types';
 import colours from '../../config/ColourConfig';
 
 export default class Square extends React.Component {
   static propTypes = {
-    isMine: PropTypes.bool,
-    neighbours: PropTypes.number,
+    clickHandler: PropTypes.func,
+    data: PropTypes.object,
   }
 
   render () {
-    const { isMine, neighbours } = this.props;
+    const { clickHandler, data } = this.props;
 
     return (
-      <View style={styles.square}>
-        <Text>{isMine ? '*' : neighbours}</Text>
-      </View>
+      <TouchableOpacity
+        style={ data.revealed ? [styles.square, styles.squareRevealed] : styles.square}
+        onPress={clickHandler}
+      >
+        { data.revealed ? (
+          <Text>{data.isMine ? '*' : data.neighbours}</Text>
+        ) : undefined}
+      </TouchableOpacity>
     );
   }
 }
@@ -25,7 +30,10 @@ const styles = StyleSheet.create({
     backgroundColor: colours.red,
     flex: 1,
     flexDirection: 'column',
-    borderColor: 'black',
+    borderColor: colours.black,
     borderWidth: 2,
   },
+  squareRevealed: {
+    backgroundColor: colours.green,
+  }
 });

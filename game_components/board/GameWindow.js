@@ -46,6 +46,7 @@ export default class GameWindow extends React.Component {
       const board = new Array(height).fill(0).map(() => new Array(width).fill({
         isMine: false,
         neighbours: 0,
+        revealed: false
       }));
 
       for (let i = 0; i < mineIndicies.length; i += 1) {
@@ -75,6 +76,7 @@ export default class GameWindow extends React.Component {
       return board;
     }
 
+    // TODO refactor to just return surrounding squares
     checkForNeighbouringMines = (i, j, board) => {
       const { height, width } = this.props;
       let numMines = 0;
@@ -130,6 +132,16 @@ export default class GameWindow extends React.Component {
       return board;
     }
 
+    clickMine = (rowIndex, colIndex) => {
+      const { board } = this.state;
+      const square = board[rowIndex][colIndex];
+      if (square.isRevealed) return;
+
+      const updatedBoard = board;
+      updatedBoard[rowIndex][colIndex].revealed = true;
+      this.setState({ board: updatedBoard });
+    }
+
     componentDidMount () {
       this.setState({
         board: this.initBoard(),
@@ -144,14 +156,17 @@ export default class GameWindow extends React.Component {
             board.map((row, rowIndex) => {
               return (
                 <View style={styles.row} key={rowIndex}>
-                  { row.map((square, colIndex) => {
-                    return (
-                      <Square
-                        key={rowIndex *  board[0].length + colIndex}
-                        isMine={square.isMine}
-                        neighbours={square.neighbours}
-                      />
-                    )})}
+                  {
+                    row.map((square, colIndex) => {
+                      return (
+                        <Square
+                          key={rowIndex *  board[0].length + colIndex}
+                          data={square}
+                          clickHandler={() => this.clickMine(rowIndex, colIndex)}
+                        />
+                      )}
+                    )
+                  }
                 </View>)
             })
           }
