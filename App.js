@@ -7,8 +7,11 @@ export default class App extends React.Component {
   state = {
     board: [],
     height: 10,
-    width:  5,
     numMines: 10,
+    offset: null,
+    seconds: 0,
+    timerInterval: null,
+    width:  5,
   }
 
   createBoardWithMines = (mineIndicies) => {
@@ -35,6 +38,16 @@ export default class App extends React.Component {
     }
 
     return board;
+  }
+
+  delta = () => {
+    const { offset } = this.state;
+
+    const now = Date.now();
+    const delta = now - offset;
+
+    this.setState({ offset: now });
+    return delta;
   }
 
   generateMineIndicies = () => {
@@ -102,7 +115,9 @@ export default class App extends React.Component {
     const boardWithMines = this.createBoardWithMines(mineIndicies);
     const board = this.initNeighbours(boardWithMines);
 
-    this.setState({ board: board })
+    this.resetTimer();
+    this.startTimer();
+    this.setState({ board })
   }
 
   initNeighbours = (boardWithMines) => {
@@ -127,6 +142,45 @@ export default class App extends React.Component {
     return board;
   }
 
+  resetTimer = () => {
+    const { timerInterval } = this.state;
+    clearInterval(timerInterval);
+
+    this.setState({
+      seconds: 0,
+      timerInterval: null,
+    });
+  }
+
+  startTimer = () => {
+    const { timerInterval } = this.state;
+
+    if (!timerInterval) {
+      this.setState({
+        offset: Date.now(),
+        timerInterval: setInterval(() => this.updateTimer(), 1000)
+      });
+    }
+  }
+
+  updateTimer = () => {
+    const { seconds } = this.state;
+
+    const newSeconds = seconds + this.delta();
+    this.setState({ seconds: newSeconds });
+  }
+
+  pauseTimer = () => {
+    const { timerInterval } = this.state;
+
+    if (timerInterval) {
+      clearInterval(timerInterval);
+      this.setState({
+        timerInterval: null,
+      });
+    }
+  }
+
   updateBoard = (board) => {
     this.setState({
       board: board,
@@ -138,15 +192,19 @@ export default class App extends React.Component {
   }
 
   render () {
-    const { board } = this.state;
+    const { board, seconds } = this.state;
 
     return (
       <SafeAreaView style={styles.droidSafeArea}>
-        <TopBar/>
+        <TopBar
+          seconds={seconds}
+          startTimer={this.startTimer}
+        />
         <GameWindow
           board={board}
-          initBoard={this.initBoard}
           getSurroundingSquares={this.getSurroundingSquares}
+          initBoard={this.initBoard}
+          pauseTimer={this.pauseTimer}
           updateBoard={this.updateBoard}
         />
       </SafeAreaView>

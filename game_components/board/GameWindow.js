@@ -9,6 +9,7 @@ export default class GameWindow extends React.Component {
       board: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.object)),
       getSurroundingSquares: PropTypes.func,
       initBoard: PropTypes.func,
+      pauseTimer: PropTypes.func,
       updateBoard: PropTypes.func,
     }
 
@@ -44,8 +45,9 @@ export default class GameWindow extends React.Component {
     }
 
     gameOver = (status) => {
-      const { initBoard } = this.props;
+      const { initBoard, pauseTimer } = this.props;
       this.revealBoard();
+      pauseTimer();
 
       Alert.alert(
         'Game Over!',

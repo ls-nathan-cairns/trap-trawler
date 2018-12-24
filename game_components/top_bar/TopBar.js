@@ -1,16 +1,33 @@
 import React from 'react'
 import { StyleSheet, Text, View } from 'react-native'
 import colours from '../../config/ColourConfig';
+import Timer from './Timer';
+import PropTypes from 'prop-types';
 
 export default class TopBar extends React.Component {
+  static propTypes = {
+    seconds: PropTypes.number,
+    startTimer: PropTypes.func,
+  }
+
   render () {
+    const { seconds, startTimer } = this.props;
+
     return (
       <View style={styles.actionBarContaner}>
         <View style={styles.flagsCounterContainer}>
           <Text>hello</Text>
         </View>
         <View style={styles.timerContainer}>
-          <Text>Goodbye</Text>
+        </View>
+        <View style={styles.flagsCounterContainer}>
+          <Text>hello</Text>
+        </View>
+        <View style={styles.timerContainer}>
+          <Timer
+            seconds={seconds}
+            startTimer={startTimer}
+          />
         </View>
       </View>
     )
@@ -27,7 +44,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   timerContainer: {
-    backgroundColor: colours.black,
+    backgroundColor: colours.green,
     flex: 1,
   }
 })
