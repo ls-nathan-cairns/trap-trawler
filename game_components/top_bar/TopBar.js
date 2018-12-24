@@ -6,9 +6,12 @@ import PropTypes from 'prop-types';
 
 export default class TopBar extends React.Component {
   static propTypes = {
+    flags: PropTypes.bool,
+    numFlags: PropTypes.number,
     restartGame: PropTypes.func,
     seconds: PropTypes.number,
     startTimer: PropTypes.func,
+    toggleFlags: PropTypes.func,
   }
 
   handleRestartPress = () => {
@@ -28,19 +31,29 @@ export default class TopBar extends React.Component {
     );
   }
 
+  toggleFlags = () => {
+    const { toggleFlags } = this.props;
+    toggleFlags();
+  }
+
   render () {
-    const { seconds, startTimer } = this.props;
+    const { flags, numFlags, seconds, startTimer } = this.props;
 
     return (
-      <View style={styles.actionBarContaner}>
+      <View style={styles.actionBarContainer}>
         <View style={styles.flagsCounterContainer}>
-        </View>
-        <View style={styles.settingsContainer}>
+          <Text>{numFlags}</Text>
         </View>
         <View style={styles.restartContainer}>
           <TouchableOpacity
             onPress={this.handleRestartPress}>
             <Text>Restart!</Text>
+          </TouchableOpacity>
+        </View>
+        <View style={styles.flagButtonContainer}>
+          <TouchableOpacity
+            onPress={this.toggleFlags}>
+            <Text>{ flags ? 'FLAGS' : 'MINES'} </Text>
           </TouchableOpacity>
         </View>
         <View style={styles.timerContainer}>
@@ -55,7 +68,7 @@ export default class TopBar extends React.Component {
 }
 
 const styles = StyleSheet.create({
-  actionBarContaner: {
+  actionBarContainer: {
     flex: 1,
     flexDirection: 'row',
   },
@@ -66,10 +79,12 @@ const styles = StyleSheet.create({
   restartContainer: {
     backgroundColor: colours.blue,
     flex: 1,
+    padding: 10,
   },
-  settingsContainer: {
+  flagButtonContainer: {
     backgroundColor: colours.background,
     flex: 1,
+    padding: 10,
   },
   timerContainer: {
     backgroundColor: colours.green,

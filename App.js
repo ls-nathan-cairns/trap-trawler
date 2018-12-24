@@ -6,7 +6,9 @@ import GameWindow from './game_components/board/GameWindow'
 export default class App extends React.Component {
   state = {
     board: [],
+    flags: false,
     height: 10,
+    numFlags: 10,
     numMines: 10,
     offset: null,
     seconds: 0,
@@ -21,6 +23,7 @@ export default class App extends React.Component {
       new Array(width).fill({}).map((undefined, colIndex) => { 
         return {
           colIndex: colIndex,
+          flagged: false,
           isMine: false,
           neighbours: 0,
           revealed: false,
@@ -38,6 +41,16 @@ export default class App extends React.Component {
     }
 
     return board;
+  }
+
+  decrementFlags = () => {
+    const { numFlags } = this.state;
+
+    if (numFlags > 0) {
+      this.setState({ numFlags: numFlags - 1 });
+      return true;
+    }
+    return false;
   }
 
   delta = () => {
@@ -108,6 +121,16 @@ export default class App extends React.Component {
     if (j > 0 && i > 0) surroundingSquares.push(board[i-1][j-1]);
 
     return surroundingSquares;
+  }
+
+  incrementFlags = () => {
+    const { numFlags, numMines } = this.state;
+
+    if (numFlags < numMines) {
+      this.setState({ numFlags: numFlags + 1 });
+      return true;
+    }
+    return false;
   }
 
   initBoard = () => {
@@ -181,6 +204,11 @@ export default class App extends React.Component {
     }
   }
 
+  toggleFlags = () => {
+    const { flags } = this.state;
+    this.setState({ flags: !flags });
+  }
+
   updateBoard = (board) => {
     this.setState({
       board: board,
@@ -192,19 +220,26 @@ export default class App extends React.Component {
   }
 
   render () {
-    const { board, seconds } = this.state;
+    const { board, flags, numFlags, seconds } = this.state;
 
     return (
       <SafeAreaView style={styles.droidSafeArea}>
         <TopBar
+          flags={flags}
+          numFlags={numFlags}
           restartGame={this.initBoard}
           seconds={seconds}
           startTimer={this.startTimer}
+          toggleFlags={this.toggleFlags}
         />
         <GameWindow
           board={board}
+          decrementFlags={this.decrementFlags}
+          flags={flags}
           getSurroundingSquares={this.getSurroundingSquares}
+          incrementFlags={this.incrementFlags}
           initBoard={this.initBoard}
+          numFlags={numFlags}
           pauseTimer={this.pauseTimer}
           updateBoard={this.updateBoard}
         />

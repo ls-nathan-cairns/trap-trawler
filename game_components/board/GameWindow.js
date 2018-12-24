@@ -7,7 +7,10 @@ import colours from '../../config/ColourConfig';
 export default class GameWindow extends React.Component {
     static propTypes = {
       board: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.object)),
+      decrementFlags: PropTypes.func,
+      flags: PropTypes.bool,
       getSurroundingSquares: PropTypes.func,
+      incrementFlags: PropTypes.func,
       initBoard: PropTypes.func,
       pauseTimer: PropTypes.func,
       updateBoard: PropTypes.func,
@@ -20,21 +23,32 @@ export default class GameWindow extends React.Component {
     }
 
     clickSquare = (rowIndex, colIndex) => {
-      const { board, updateBoard } = this.props;
-
+      const { board, decrementFlags, flags, incrementFlags, updateBoard } = this.props;
       const square = board[rowIndex][colIndex];
+      const updatedBoard = board;
+
       if (square.isRevealed) return;
 
-      const updatedBoard = board;
-      updatedBoard[rowIndex][colIndex].revealed = true;
+      if (flags) {
+        const flagged = square.flagged;
+        let toggle = false;
+        if (flagged) {
+          toggle = incrementFlags();
+        } else {
+          toggle = decrementFlags();
+        }
+        if (toggle) updatedBoard[rowIndex][colIndex].flagged = !flagged;
+      } else {
+        updatedBoard[rowIndex][colIndex].revealed = true;
 
-      if (square.isMine) {
-        this.gameOver("You Lost!");
-        return;
-      }
+        if (square.isMine) {
+          this.gameOver("You Lost!");
+          return;
+        }
 
-      if (square.neighbours == 0) {
-        this.revealNeighbours(rowIndex, colIndex, updatedBoard);
+        if (square.neighbours == 0) {
+          this.revealNeighbours(rowIndex, colIndex, updatedBoard);
+        }
       }
 
       if (this.checkWon(updatedBoard)) {

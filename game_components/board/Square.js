@@ -14,7 +14,9 @@ export default class Square extends React.Component {
 
     return (
       <TouchableOpacity
-        style={ data.revealed ? [styles.square, styles.squareRevealed] : styles.square}
+        style={ data.revealed ? [styles.square, styles.squareRevealed] : (
+          data.flagged ? [styles.square, styles.squareFlagged]: styles.square)
+        }
         onPress={clickHandler}
       >
         { data.revealed ? (
@@ -35,5 +37,8 @@ const styles = StyleSheet.create({
   },
   squareRevealed: {
     backgroundColor: colours.green,
-  }
+  },
+  squareFlagged: {
+    backgroundColor: colours.orange,
+  },
 });
