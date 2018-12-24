@@ -116,7 +116,7 @@ export default class GameWindow extends React.Component {
 const styles = StyleSheet.create({
   gameWindowContainer: {
     backgroundColor: colours.red,
-    flex: 7,
+    flex: 10,
   },
   row: {
     flex: 1,
