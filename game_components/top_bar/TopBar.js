@@ -1,13 +1,31 @@
 import React from 'react'
-import { StyleSheet, Text, View } from 'react-native'
+import { Alert, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import colours from '../../config/ColourConfig';
 import Timer from './Timer';
 import PropTypes from 'prop-types';
 
 export default class TopBar extends React.Component {
   static propTypes = {
+    restartGame: PropTypes.func,
     seconds: PropTypes.number,
     startTimer: PropTypes.func,
+  }
+
+  handleRestartPress = () => {
+    const { restartGame } = this.props;
+
+    Alert.alert(
+      'Restart?',
+      'Are you sure you want to restart?',
+      [{
+        text: 'Cancel',
+        style: 'cancel',
+      },
+      {
+        text: 'Restart',
+        onPress: () => restartGame(),
+      },]
+    );
   }
 
   render () {
@@ -16,12 +34,14 @@ export default class TopBar extends React.Component {
     return (
       <View style={styles.actionBarContaner}>
         <View style={styles.flagsCounterContainer}>
-          <Text>hello</Text>
         </View>
-        <View style={styles.timerContainer}>
+        <View style={styles.settingsContainer}>
         </View>
-        <View style={styles.flagsCounterContainer}>
-          <Text>hello</Text>
+        <View style={styles.restartContainer}>
+          <TouchableOpacity
+            onPress={this.handleRestartPress}>
+            <Text>Restart!</Text>
+          </TouchableOpacity>
         </View>
         <View style={styles.timerContainer}>
           <Timer
@@ -41,6 +61,14 @@ const styles = StyleSheet.create({
   },
   flagsCounterContainer: {
     backgroundColor: colours.red,
+    flex: 1,
+  },
+  restartContainer: {
+    backgroundColor: colours.blue,
+    flex: 1,
+  },
+  settingsContainer: {
+    backgroundColor: colours.background,
     flex: 1,
   },
   timerContainer: {

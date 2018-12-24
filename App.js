@@ -197,6 +197,7 @@ export default class App extends React.Component {
     return (
       <SafeAreaView style={styles.droidSafeArea}>
         <TopBar
+          restartGame={this.initBoard}
           seconds={seconds}
           startTimer={this.startTimer}
         />
