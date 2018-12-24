@@ -8,12 +8,12 @@ export default class GameWindow extends React.Component {
     static propTypes = {
       gameOver: PropTypes.func,
       height: PropTypes.number,
-      numMines: PropTypes.number,
       width: PropTypes.number,
     }
 
     state = {
       board: [],
+      numMines: Math.ceil((this.props.height * this.props.width) / 5),
     }
 
     getSurroundingSquares = (i, j, board) => {
@@ -115,21 +115,26 @@ export default class GameWindow extends React.Component {
     }
 
     generateMineIndicies = () => {
-      const { numMines, height, width } = this.props
+      const { numMines } = this.state;
+      const { height, width } = this.props;
       const numSquares = height * width;
+
       let range = Array(numSquares).fill(0).map((x, y) => x + y);
 
       for ( let i = 0; i < numMines; i += 1) {
         const swapIndex = Math.floor((Math.random() * numSquares));
         const swapValue = range[i];
+
         range[i] = range[swapIndex];
         range[swapIndex] = swapValue;
       }
-      range = range.splice(0, numMines);
 
-      const mineIndicies = range.map(val => {
+      const rangeSplice = range.splice(0, numMines);
+
+      const mineIndicies = rangeSplice.map(val => {
         const rowIndex = Math.floor(Math.abs(val -1) / width);
         const colIndex = Math.abs(val - 1) % width;
+
         return {
           rowIndex: rowIndex,
           colIndex: colIndex,
