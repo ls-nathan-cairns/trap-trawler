@@ -15,6 +15,6 @@ export default class TopBar extends React.Component {
 const styles = StyleSheet.create({
   actionBarContainer: {
     backgroundColor: colours.blue,
-    flex: 1
+    flex: 1,
   }
 })
