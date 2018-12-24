@@ -8,7 +8,7 @@ export default class App extends React.Component {
     board: [],
     flags: false,
     height: 10,
-    numFlags: 10,
+    numFlags: 0,
     numMines: 10,
     offset: null,
     seconds: 0,
@@ -134,13 +134,15 @@ export default class App extends React.Component {
   }
 
   initBoard = () => {
+    const { numMines } = this.state;
+
     const mineIndicies = this.generateMineIndicies();
     const boardWithMines = this.createBoardWithMines(mineIndicies);
     const board = this.initNeighbours(boardWithMines);
 
     this.resetTimer();
     this.startTimer();
-    this.setState({ board })
+    this.setState({ board, numFlags: numMines })
   }
 
   initNeighbours = (boardWithMines) => {

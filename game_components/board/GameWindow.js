@@ -27,7 +27,7 @@ export default class GameWindow extends React.Component {
       const square = board[rowIndex][colIndex];
       const updatedBoard = board;
 
-      if (square.isRevealed) return;
+      if (square.revealed) return;
 
       if (flags) {
         const flagged = square.flagged;
@@ -38,7 +38,8 @@ export default class GameWindow extends React.Component {
           toggle = decrementFlags();
         }
         if (toggle) updatedBoard[rowIndex][colIndex].flagged = !flagged;
-      } else {
+        updateBoard(updatedBoard);
+      } else if (!square.flagged) {
         updatedBoard[rowIndex][colIndex].revealed = true;
 
         if (square.isMine) {
@@ -49,12 +50,12 @@ export default class GameWindow extends React.Component {
         if (square.neighbours == 0) {
           this.revealNeighbours(rowIndex, colIndex, updatedBoard);
         }
-      }
 
-      if (this.checkWon(updatedBoard)) {
-        this.gameOver("You won!");
-      } else {
-        updateBoard(updatedBoard);
+        if (this.checkWon(updatedBoard)) {
+          this.gameOver("You won!");
+        } else {
+          updateBoard(updatedBoard);
+        }
       }
     }
 
