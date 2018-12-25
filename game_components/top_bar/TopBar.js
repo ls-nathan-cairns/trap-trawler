@@ -1,5 +1,5 @@
 import React from 'react'
-import { Alert, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { Alert, StyleSheet, Text, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native'
 import colours from '../../config/ColourConfig';
 import Timer from './Timer';
 import PropTypes from 'prop-types';
@@ -53,10 +53,12 @@ export default class TopBar extends React.Component {
           </TouchableOpacity>
         </View>
         <View style={styles.optionContainer}>
-          <TouchableOpacity
+          <TouchableWithoutFeedback
             onPress={this.toggleFlags}>
-            <Icon name={ flags ? 'flag' : 'bomb'} size={30} color={colours.white} />
-          </TouchableOpacity>
+            <View style={styles.optionContainer}>
+              <Icon name={ flags ? 'flag' : 'bomb'} size={30} color={colours.white} />
+            </View>
+          </TouchableWithoutFeedback>
         </View>
         <View style={styles.optionContainer}>
           <Timer

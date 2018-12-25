@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { Text, StyleSheet, TouchableWithoutFeedback, View } from 'react-native';
 import PropTypes from 'prop-types';
 import colours from '../../config/ColourConfig';
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -15,23 +15,28 @@ export default class Square extends React.Component {
     const { clickHandler, data } = this.props;
 
     return (
-      <TouchableOpacity
+      <TouchableWithoutFeedback
         style={ data.revealed ? [styles.square, styles.squareRevealed] : (
           data.flagged ? [styles.square, styles.squareFlagged]: styles.square)
         }
         onPress={clickHandler}
       >
-        { data.revealed ? (
-          data.isMine ?
-            <Icon name='bomb' size={30} color={colours.white}/>
+        <View
+          style={ data.revealed ? [styles.square, styles.squareRevealed] : (
+            data.flagged ? [styles.square, styles.squareFlagged]: styles.square)
+          }>
+          { data.revealed ? (
+            data.isMine ?
+              <Icon name='bomb' size={30} color={colours.white}/>
+              :
+              <Text style={globalStyles.squareText}>{data.neighbours > 0 ? data.neighbours : ''}</Text>
+          ) 
             :
-            <Text style={globalStyles.squareText}>{data.neighbours > 0 ? data.neighbours : ''}</Text>
-        ) 
-          :
-          (data.flagged ?
-            <Icon name='flag' size={30} color={colours.white}/> : undefined
-          )}
-      </TouchableOpacity>
+            (data.flagged ?
+              <Icon name='flag' size={30} color={colours.white}/> : undefined
+            )}
+        </View>
+      </TouchableWithoutFeedback>
     );
   }
 }
