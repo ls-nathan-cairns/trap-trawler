@@ -2,7 +2,6 @@ import React from 'react';
 import { Alert, StyleSheet, View } from 'react-native';
 import Square from './Square';
 import PropTypes from 'prop-types';
-import colours from '../../config/ColourConfig';
 
 export default class GameWindow extends React.Component {
     static propTypes = {
@@ -132,12 +131,11 @@ export default class GameWindow extends React.Component {
 
 const styles = StyleSheet.create({
   gameWindowContainer: {
-    backgroundColor: colours.red,
     flex: 10,
+    padding: 5,
   },
   row: {
     flex: 1,
     flexDirection: 'row',
-    backgroundColor: colours.green,
   },
 });

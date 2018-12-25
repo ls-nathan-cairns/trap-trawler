@@ -1,7 +1,8 @@
-import React from 'react'
-import { Platform, SafeAreaView, StyleSheet } from 'react-native'
-import TopBar from './game_components/top_bar/TopBar'
-import GameWindow from './game_components/board/GameWindow'
+import React from 'react';
+import { Platform, SafeAreaView, StyleSheet } from 'react-native';
+import TopBar from './game_components/top_bar/TopBar';
+import GameWindow from './game_components/board/GameWindow';
+import colours from './config/ColourConfig';
 
 export default class App extends React.Component {
   state = {
@@ -252,7 +253,8 @@ export default class App extends React.Component {
 
 const styles = StyleSheet.create({
   droidSafeArea: {
+    backgroundColor: colours.background,
     flex: 1,
-    paddingTop: Platform.OS === 'android' ? 25 : 0
+    paddingTop: Platform.OS === 'android' ? 25 : 0,
   },
 })

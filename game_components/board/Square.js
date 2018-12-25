@@ -29,16 +29,16 @@ export default class Square extends React.Component {
 
 const styles = StyleSheet.create({
   square: {
-    backgroundColor: colours.red,
+    backgroundColor: colours.square,
+    elevation: 1,
     flex: 1,
     flexDirection: 'column',
-    borderColor: colours.black,
-    borderWidth: 2,
+    margin: 5,
   },
   squareRevealed: {
-    backgroundColor: colours.green,
+    backgroundColor: colours.squareRevealed,
   },
   squareFlagged: {
-    backgroundColor: colours.orange,
+    backgroundColor: colours.squareFlagged,
   },
 });

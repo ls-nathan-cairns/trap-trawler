@@ -69,25 +69,23 @@ export default class TopBar extends React.Component {
 
 const styles = StyleSheet.create({
   actionBarContainer: {
+    backgroundColor: colours.topBar,
     flex: 1,
     flexDirection: 'row',
+    elevation: 1,
   },
   flagsCounterContainer: {
-    backgroundColor: colours.red,
     flex: 1,
   },
   restartContainer: {
-    backgroundColor: colours.blue,
     flex: 1,
     padding: 10,
   },
   flagButtonContainer: {
-    backgroundColor: colours.background,
     flex: 1,
     padding: 10,
   },
   timerContainer: {
-    backgroundColor: colours.green,
     flex: 1,
   }
 })
