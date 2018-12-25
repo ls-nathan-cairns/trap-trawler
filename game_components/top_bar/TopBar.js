@@ -3,6 +3,8 @@ import { Alert, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import colours from '../../config/ColourConfig';
 import Timer from './Timer';
 import PropTypes from 'prop-types';
+import Icon from 'react-native-vector-icons/FontAwesome';
+import globalStyles from '../../config/GlobalStyles';
 
 export default class TopBar extends React.Component {
   static propTypes = {
@@ -41,22 +43,22 @@ export default class TopBar extends React.Component {
 
     return (
       <View style={styles.actionBarContainer}>
-        <View style={styles.flagsCounterContainer}>
-          <Text>{numFlags}</Text>
+        <View style={styles.optionContainer}>
+          <Text style={globalStyles.topBarText}>{numFlags}</Text>
         </View>
-        <View style={styles.restartContainer}>
+        <View style={styles.optionContainer}>
           <TouchableOpacity
             onPress={this.handleRestartPress}>
-            <Text>Restart!</Text>
+            <Icon name='refresh' size={30} color={colours.white} />
           </TouchableOpacity>
         </View>
-        <View style={styles.flagButtonContainer}>
+        <View style={styles.optionContainer}>
           <TouchableOpacity
             onPress={this.toggleFlags}>
-            <Text>{ flags ? 'FLAGS' : 'MINES'} </Text>
+            <Icon name={ flags ? 'flag' : 'bomb'} size={30} color={colours.white} />
           </TouchableOpacity>
         </View>
-        <View style={styles.timerContainer}>
+        <View style={styles.optionContainer}>
           <Timer
             seconds={seconds}
             startTimer={startTimer}
@@ -74,18 +76,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     elevation: 1,
   },
-  flagsCounterContainer: {
+  optionContainer: {
+    alignItems: 'center',
     flex: 1,
+    justifyContent: 'center',
   },
-  restartContainer: {
-    flex: 1,
-    padding: 10,
-  },
-  flagButtonContainer: {
-    flex: 1,
-    padding: 10,
-  },
-  timerContainer: {
-    flex: 1,
-  }
 })

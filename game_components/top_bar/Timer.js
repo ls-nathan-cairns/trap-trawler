@@ -1,6 +1,7 @@
 import React from 'react'
 import { Text } from 'react-native'
 import PropTypes from 'prop-types';
+import gloabalStyles from '../../config/GlobalStyles';
 
 export default class TopBar extends React.Component {
   static propTypes = {
@@ -17,7 +18,7 @@ export default class TopBar extends React.Component {
     const { seconds } = this.props;
 
     return (
-      <Text>{this.secondsToHHMMSS(seconds)}</Text>
+      <Text style={gloabalStyles.topBarText}>{this.secondsToHHMMSS(seconds)}</Text>
     )
   }
 }

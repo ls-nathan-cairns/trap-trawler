@@ -2,6 +2,7 @@ import React from 'react';
 import { Text, StyleSheet, TouchableOpacity } from 'react-native';
 import PropTypes from 'prop-types';
 import colours from '../../config/ColourConfig';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 export default class Square extends React.Component {
   static propTypes = {
@@ -20,8 +21,15 @@ export default class Square extends React.Component {
         onPress={clickHandler}
       >
         { data.revealed ? (
-          <Text>{data.isMine ? '*' : data.neighbours}</Text>
-        ) : undefined}
+          data.isMine ?
+            <Icon name='bomb' size={30} color={colours.white}/>
+            :
+            <Text style={styles.neighboursText}>{data.neighbours > 0 ? data.neighbours : ''}</Text>
+        ) 
+          :
+          (data.flagged ?
+            <Icon name='flag' size={30} color={colours.white}/> : undefined
+          )}
       </TouchableOpacity>
     );
   }
@@ -29,10 +37,12 @@ export default class Square extends React.Component {
 
 const styles = StyleSheet.create({
   square: {
+    alignItems: 'center',
     backgroundColor: colours.square,
     elevation: 1,
     flex: 1,
     flexDirection: 'column',
+    justifyContent: 'center',
     margin: 5,
   },
   squareRevealed: {
@@ -41,4 +51,8 @@ const styles = StyleSheet.create({
   squareFlagged: {
     backgroundColor: colours.squareFlagged,
   },
+  neighboursText: {
+    color: colours.white,
+    fontSize: 20,
+  }
 });

@@ -20,6 +20,7 @@ colours.primary = colours.defaultOrange;
 colours.seondary = colours.lightBlue;
 colours.accent = colours.darkBlue;
 
+colours.white = colours.defaultWhite;
 colours.square = colours.primary;
 colours.squareRevealed = colours.lightBlue;
 colours.squareFlagged = colours.darkBlue;
