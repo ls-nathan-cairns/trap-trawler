@@ -78,7 +78,11 @@ export default class GameWindow extends React.Component {
 
       const revealedBoard = board.map(row => {
         return row.map(square => {
-          return { ...square, revealed: true };
+          if (square.flagged) {
+            return square
+          } else {
+            return { ...square, revealed: true };
+          }
         });
       });
 
@@ -91,7 +95,7 @@ export default class GameWindow extends React.Component {
 
       surroundingSquares.map(square => {
         const neighbour = board[square.rowIndex][square.colIndex];
-        if (!neighbour.revealed && !neighbour.isMine) {
+        if (!neighbour.revealed && !neighbour.isMine && !neighbour.flagged) {
           board[square.rowIndex][square.colIndex].revealed = true;
 
           if (neighbour.neighbours == 0) {

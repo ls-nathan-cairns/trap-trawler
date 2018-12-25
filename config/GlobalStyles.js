@@ -7,4 +7,6 @@ globalStyles.topBarText = {
   fontSize: 20,
 };
 
+globalStyles.squareText = globalStyles.topBarText;
+
 module.exports = globalStyles;

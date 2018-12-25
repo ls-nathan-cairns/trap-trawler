@@ -3,6 +3,7 @@ import { Text, StyleSheet, TouchableOpacity } from 'react-native';
 import PropTypes from 'prop-types';
 import colours from '../../config/ColourConfig';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import globalStyles from '../../config/GlobalStyles';
 
 export default class Square extends React.Component {
   static propTypes = {
@@ -24,7 +25,7 @@ export default class Square extends React.Component {
           data.isMine ?
             <Icon name='bomb' size={30} color={colours.white}/>
             :
-            <Text style={styles.neighboursText}>{data.neighbours > 0 ? data.neighbours : ''}</Text>
+            <Text style={globalStyles.squareText}>{data.neighbours > 0 ? data.neighbours : ''}</Text>
         ) 
           :
           (data.flagged ?
@@ -51,8 +52,4 @@ const styles = StyleSheet.create({
   squareFlagged: {
     backgroundColor: colours.squareFlagged,
   },
-  neighboursText: {
-    color: colours.white,
-    fontSize: 20,
-  }
 });
